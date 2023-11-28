@@ -1,5 +1,5 @@
 import { questoesSample } from "@/dataSample/questoes";
-import Questao from "./Questao";
+import Questao from "../Questao";
 import { SimuladoRespostasContext } from "@/app/contexts/SimuladoRespostasContext";
 import React, { useContext } from "react";
 

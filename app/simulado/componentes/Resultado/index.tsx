@@ -1,7 +1,8 @@
 import { SimuladoRespostasContext } from "@/app/contexts/SimuladoRespostasContext";
 import { questoesSample } from "@/dataSample/questoes";
 import React, { useContext } from "react";
-import QuestaoCorrigida from "./QuestaoCorrigida";
+import QuestaoCorrigida from "../QuestaoCorrigida";
+import { A } from "../../../constants/options";
 
 const Resultado = () => {
   const { respostas } = useContext(SimuladoRespostasContext);
@@ -10,7 +11,7 @@ const Resultado = () => {
 
   const nRespostasCorretas = Object.values(respostas).reduce(
     (accumulator, currentValue) =>
-      currentValue === "A" ? accumulator + 1 : accumulator,
+      currentValue === A ? accumulator + 1 : accumulator,
     0
   );
   return (

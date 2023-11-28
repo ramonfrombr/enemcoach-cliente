@@ -1,6 +1,13 @@
 import { createContext, useState } from "react";
+import { A, B, C, D, E } from "../constants/options";
 
-type QuestaoOpcoes = "A" | "B" | "C" | "D" | "E" | "";
+export type QuestaoOpcoes =
+  | typeof A
+  | typeof B
+  | typeof C
+  | typeof D
+  | typeof E
+  | "";
 
 export type ISimuladoRespostas = {
   "1": QuestaoOpcoes;

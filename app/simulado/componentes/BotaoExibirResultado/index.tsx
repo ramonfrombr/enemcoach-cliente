@@ -1,6 +1,6 @@
 import { SimuladoRespostasContext } from "@/app/contexts/SimuladoRespostasContext";
 import React, { useContext } from "react";
-import Resultado from "./Resultado";
+import Resultado from "../Resultado";
 
 const BotaoExibirResultado = () => {
   const { setExibirResultado, exibirResultado } = useContext(

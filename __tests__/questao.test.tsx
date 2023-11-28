@@ -29,16 +29,16 @@ describe("Home", () => {
       `questao-${questaoExemplo.numero}-opcao-a`
     );
     const opcaob = screen.getByTestId(
-      `questao-${questaoExemplo.numero}-opcao-b`
+      `questao-${questaoExemplo.numero}-opcao-B`
     );
     const opcaoc = screen.getByTestId(
-      `questao-${questaoExemplo.numero}-opcao-c`
+      `questao-${questaoExemplo.numero}-opcao-C`
     );
     const opcaod = screen.getByTestId(
-      `questao-${questaoExemplo.numero}-opcao-d`
+      `questao-${questaoExemplo.numero}-opcao-D`
     );
     const opcaoe = screen.getByTestId(
-      `questao-${questaoExemplo.numero}-opcao-e`
+      `questao-${questaoExemplo.numero}-opcao-E`
     );
     expect(enunciado).toBeInTheDocument();
     expect(enunciado.innerHTML).toBe(questaoExemplo.enunciado);
