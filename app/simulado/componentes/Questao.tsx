@@ -1,27 +1,107 @@
 "use client";
 import { SimuladoRespostasContext } from "@/app/contexts/SimuladoRespostasContext";
-import React, { useContext, useState } from "react";
+import React, {
+  useCallback,
+  useContext,
+  useLayoutEffect,
+  useMemo,
+  useState,
+} from "react";
 
 interface QuestaoProps {
   questao: IQuestao;
 }
 
+function shuffleElements(array: React.JSX.Element[]) {
+  let currentIndex = array.length,
+    randomIndex;
+
+  // While there remain elements to shuffle.
+  while (currentIndex > 0) {
+    // Pick a remaining element.
+    randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex--;
+
+    // And swap it with the current element.
+    [array[currentIndex], array[randomIndex]] = [
+      array[randomIndex],
+      array[currentIndex],
+    ];
+  }
+
+  return array;
+}
+
 const Questao: React.FC<QuestaoProps> = ({ questao }) => {
   const [opcaoSelecionada, setOpcaoSelecionada] = useState<string>("");
 
-  const { setRespostas } = useContext(SimuladoRespostasContext);
+  const { setRespostas, exibirResultado } = useContext(
+    SimuladoRespostasContext
+  );
 
-  const definirResposta = (resposta: string) => {
-    setOpcaoSelecionada(resposta);
-    const questaoNumero = String(questao["numero"]);
-    setRespostas((respostasAtual) => ({
-      ...respostasAtual,
-      [questaoNumero]: resposta,
-    }));
-  };
+  const definirResposta = useCallback(
+    (resposta: string) => {
+      setOpcaoSelecionada(resposta);
+      const questaoNumero = String(questao["numero"]);
+      setRespostas((respostasAtual) => ({
+        ...respostasAtual,
+        [questaoNumero]: resposta,
+      }));
+    },
+    [questao, setRespostas]
+  );
+
+  const opcoesItens = useMemo(() => {
+    const criarOpcao = (opcao: string) => (
+      <label
+        className="flex items-start cursor-pointer hover:bg-slate-200 py-3 px-2 transition duration-150"
+        data-testid={`questao-${questao.numero}-opcao-${opcao}`}
+        htmlFor={`questao-${questao.numero}-opcao-${opcao}`}
+      >
+        <input
+          className="mt-[5px] mr-1"
+          type="radio"
+          name={`questao-${questao.numero}`}
+          id={`questao-${questao.numero}-opcao-${opcao}`}
+          onChange={() => definirResposta(opcao.toUpperCase())}
+        />
+        <span>
+          {opcao === "a"
+            ? questao.opcaoa
+            : opcao === "b"
+            ? questao.opcaob
+            : opcao === "c"
+            ? questao.opcaoc
+            : opcao === "d"
+            ? questao.opcaod
+            : questao.opcaoe}
+        </span>
+      </label>
+    );
+
+    const opcoes = [
+      criarOpcao("a"),
+      criarOpcao("b"),
+      criarOpcao("c"),
+      criarOpcao("d"),
+      criarOpcao("e"),
+    ];
+
+    shuffleElements(opcoes);
+
+    return (
+      <>
+        {opcoes[0]}
+        {opcoes[1]}
+        {opcoes[2]}
+        {opcoes[3]}
+        {opcoes[4]}
+      </>
+    );
+  }, [questao, definirResposta]);
 
   return (
-    <div className="p-5 border m-5 w-[500px]">
+    <div className="p-5 border my-5 w-full" suppressHydrationWarning>
       <h2 className="font-bold">
         Questao {questao.numero}
         <span className="text-red-500">{opcaoSelecionada}</span>
@@ -33,70 +113,7 @@ const Questao: React.FC<QuestaoProps> = ({ questao }) => {
         {questao.enunciado}
       </main>
 
-      <form className="flex-col flex [&>label]:mb-5">
-        <label
-          data-testid={`questao-${questao.numero}-opcao-a`}
-          htmlFor={`questao-${questao.numero}-opcao-a`}
-        >
-          <input
-            type="radio"
-            name={`questao-${questao.numero}`}
-            id={`questao-${questao.numero}-opcao-a`}
-            onChange={() => definirResposta("A")}
-          />
-          <span>{questao.opcaoa}</span>
-        </label>
-        <label
-          data-testid={`questao-${questao.numero}-opcao-b`}
-          htmlFor={`questao-${questao.numero}-opcao-b`}
-        >
-          <input
-            type="radio"
-            name={`questao-${questao.numero}`}
-            id={`questao-${questao.numero}-opcao-b`}
-            onChange={() => definirResposta("B")}
-          />
-          <span>{questao.opcaob}</span>
-        </label>
-        <label
-          data-testid={`questao-${questao.numero}-opcao-c`}
-          htmlFor={`questao-${questao.numero}-opcao-c`}
-        >
-          <input
-            type="radio"
-            name={`questao-${questao.numero}`}
-            id={`questao-${questao.numero}-opcao-c`}
-            onChange={() => definirResposta("C")}
-          />
-          <span>{questao.opcaoc}</span>
-        </label>
-
-        <label
-          data-testid={`questao-${questao.numero}-opcao-d`}
-          htmlFor={`questao-${questao.numero}-opcao-d`}
-        >
-          <input
-            type="radio"
-            name={`questao-${questao.numero}`}
-            id={`questao-${questao.numero}-opcao-d`}
-            onChange={() => definirResposta("D")}
-          />
-          <span>{questao.opcaod}</span>
-        </label>
-
-        <label
-          data-testid={`questao-${questao.numero}-opcao-e`}
-          htmlFor={`questao-${questao.numero}-opcao-e`}
-        >
-          <input
-            type="radio"
-            name={`questao-${questao.numero}`}
-            id={`questao-${questao.numero}-opcao-e`}
-            onChange={() => definirResposta("E")}
-          />
-          <span>{questao.opcaoe}</span>
-        </label>
-      </form>
+      <form className="flex-col flex ">{opcoesItens}</form>
     </div>
   );
 };

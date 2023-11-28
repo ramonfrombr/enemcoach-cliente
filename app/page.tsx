@@ -1,12 +1,14 @@
 import Link from "next/link";
+import Navbar from "./componentes/Navbar/Navbar";
+import Hero from "./componentes/Hero/Hero";
+import Rodape from "./componentes/Rodape/Rodape";
 
 export default function Home() {
   return (
     <main>
-      <h1 data-testid="heading">ENEM Coach</h1>
-      <Link href="/simulado">
-        <button data-testid="button-iniciar-simulado">Iniciar Simulado</button>
-      </Link>
+      <Navbar />
+      <Hero />
+      <Rodape />
     </main>
   );
 }
